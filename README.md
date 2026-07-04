@@ -48,6 +48,5 @@ MAPE: 4.09%
 
 The XGBoost model demonstrated excellent predictive capability, accurately capturing the nonlinear relationship between the operating parameters and the local Nusselt number. Compared with the MLP, it achieved substantially lower prediction errors and a much higher coefficient of determination, indicating superior generalization on the test dataset.
 
-Overall Comparison
-
+Overall Comparison 
 Both models were trained using the same experimental dataset and evaluated using the same train-test split and performance metrics. Although the MLP provided reasonable predictions, XGBoost consistently outperformed it in every evaluation metric. The coefficient of determination increased from 0.7239 to 0.9849, while the RMSE, MAE, and MAPE were reduced from 10.40, 6.94, and 32.28% to 2.43, 0.91, and 4.09%, respectively. These results indicate that XGBoost is considerably more effective than the current MLP model for predicting the local Nusselt number of supercritical CO₂ under the investigated operating conditions.
