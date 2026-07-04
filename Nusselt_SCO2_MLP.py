@@ -1,6 +1,6 @@
-# =========================
-# 1. IMPORT LIBRARIES
-# =========================
+
+ # 1. IMPORT LIBRARIES
+
 
 import numpy as np
 import pandas as pd
@@ -15,15 +15,15 @@ from tensorflow.keras.layers import Dense, Dropout
 from tensorflow.keras.callbacks import EarlyStopping
 from tensorflow.keras import regularizers
 
-# =========================
+
 # 2. REPRODUCIBILITY SEED
-# =========================
+
 np.random.seed(42)
 tf.random.set_seed(42)
 
-# =========================
-# 3. LOAD DATA
-# =========================
+
+# 3. LOADING DATASET
+
 
 # Load experimental dataset (Excel file)
 data = pd.read_excel("SCO2.xlsx")
@@ -34,9 +34,8 @@ X = data.iloc[:, 0:8].values
 # Output target: Local Nusselt number
 y = data.iloc[:, 8].values.reshape(-1, 1)
 
-# =========================
 # 4. TRAIN-TEST SPLIT (IMPORTANT)
-# =========================
+
 
 # Split BEFORE scaling to avoid data leakage
 X_train, X_test, y_train, y_test = train_test_split(
@@ -45,9 +44,9 @@ X_train, X_test, y_train, y_test = train_test_split(
     random_state=42
 )
 
-# =========================
+
 # 5. FEATURE SCALING
-# =========================
+
 
 # Normalize input features to [0,1] range
 x_scaler = MinMaxScaler()
@@ -59,9 +58,9 @@ y_scaler = MinMaxScaler()
 y_train = y_scaler.fit_transform(y_train)
 y_test = y_scaler.transform(y_test)
 
-# =========================
-# 6. BUILD MLP MODEL
-# =========================
+
+# 6. BUILDING MLP MODEL
+
 
 model = Sequential()
 
@@ -69,7 +68,7 @@ model = Sequential()
 model.add(Dense(
     64,
     activation='tanh',
-    input_shape=(7,),
+    input_shape=(8,),
     kernel_regularizer=regularizers.l2(0.001) # L2 regularization
 ))
 
@@ -97,9 +96,9 @@ model.compile(
 # Show model architecture
 model.summary()
 
-# =========================
-# 7. EARLY STOPPING (OVERFITTING CONTROL)
-# =========================
+
+# 7. EARLY STOPPING TECHNIQUE (OVERFITTING CONTROL)
+
 
 early_stop = EarlyStopping(
     monitor='val_loss',
@@ -107,9 +106,9 @@ early_stop = EarlyStopping(
     restore_best_weights=True
 )
 
-# =========================
+
 # 8. TRAIN MODEL
-# =========================
+
 
 history = model.fit(
     X_train, y_train,
@@ -120,9 +119,9 @@ history = model.fit(
     verbose=1
 )
 
-# =========================
+
 # 9. PREDICTION
-# =========================
+
 
 y_pred = model.predict(X_test)
 
@@ -130,9 +129,9 @@ y_pred = model.predict(X_test)
 y_pred_real = y_scaler.inverse_transform(y_pred)
 y_test_real = y_scaler.inverse_transform(y_test)
 
-# =========================
+
 # 10. EVALUATION METRICS
-# =========================
+
 
 # R² Score (goodness of fit)
 r2 = r2_score(y_test_real, y_pred_real)
@@ -146,9 +145,9 @@ mae = mean_absolute_error(y_test_real, y_pred_real)
 # Mean Absolute Percentage Error
 mape = np.mean(np.abs((y_test_real - y_pred_real) / y_test_real)) * 100
 
-# =========================
+
 # 11. RESULTS OUTPUT
-# =========================
+
 
 print("\n================ RESULTS ================")
 print(f"R2 Score = {r2:.4f}")
